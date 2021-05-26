@@ -1,7 +1,8 @@
-package com.javierkontos.legendarybank
+package com.javierkontos.legendarybank.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.javierkontos.legendarybank.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
