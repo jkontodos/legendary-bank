@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
@@ -19,6 +20,7 @@ import timber.log.Timber
 @AndroidEntryPoint
 class SplashFragment : Fragment() {
     private lateinit var binding: FragmentSplashBinding
+    private val viewModel: SplashViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,10 +33,20 @@ class SplashFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lifecycleScope.launch {
-            delay(1500)
-            navigateToTransactions()
-        }
+        viewModel.model.observe(viewLifecycleOwner, {
+            when (it) {
+                is SplashViewModel.UiModel.Success -> {
+                    lifecycleScope.launch {
+                        delay(1000)
+                        navigateToTransactions()
+                    }
+                }
+                is SplashViewModel.UiModel.Failure -> Timber.e("Currency Rates Failure")
+                is SplashViewModel.UiModel.Loading -> Timber.d("Loading . . .")
+            }
+        })
+
+        viewModel.getCurrencyRates()
     }
 
     private fun navigateToTransactions() {
