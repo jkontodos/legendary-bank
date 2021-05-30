@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.javierkontos.legendarybank.R
 import com.javierkontos.legendarybank.databinding.FragmentSplashBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,7 +42,7 @@ class SplashFragment : Fragment() {
                         navigateToTransactions()
                     }
                 }
-                is SplashViewModel.UiModel.Failure -> Timber.e("Currency Rates Failure")
+                is SplashViewModel.UiModel.Failure -> showFailureError()
                 is SplashViewModel.UiModel.Loading -> Timber.d("Loading . . .")
             }
         })
@@ -49,6 +50,15 @@ class SplashFragment : Fragment() {
         viewModel.getCurrencyRates()
     }
 
+    private fun showFailureError(){
+        val snackbar = Snackbar
+            .make(
+                binding.root,
+                getString(R.string.error_currencyRates),
+                Snackbar.LENGTH_LONG
+            )
+        snackbar.show()
+    }
     private fun navigateToTransactions() {
         Timber.d("Navigate to Transactions")
         val action = SplashFragmentDirections.actionSplashFragmentToTransactionsFragment()
