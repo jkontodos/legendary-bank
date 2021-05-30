@@ -1,6 +1,9 @@
 <resources>
     <string name="appName">Legendary Bank</string>
     <string name="error.currencyRates">Currency Rates Failure</string>
-    <string name="transactions.productSku">Product SKU:</string>
+    <string name="transactions.productSku">Product SKU</string>
+    <string name="transactions.related">Related transactions</string>
+    <string name="transactions.total">Total</string>
+    <string name="transactions.amount">Amount</string>
 
 </resources>

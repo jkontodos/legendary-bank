@@ -15,5 +15,20 @@
     <fragment
         android:id="@+id/transactionsFragment"
         android:name="com.javierkontos.legendarybank.ui.transactions.TransactionsFragment"
-        android:label="TransactionsFragment" />
+        android:label="TransactionsFragment" >
+        <action
+            android:id="@+id/action_transactionsFragment_to_transactionDetailsFragment"
+            app:destination="@id/transactionDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/transactionDetailsFragment"
+        android:name="com.javierkontos.legendarybank.ui.transactions.details.TransactionDetailsFragment"
+        android:label="TransactionDetailsFragment" >
+        <argument
+            android:name="productSku"
+            app:argType="string" />
+        <argument
+            android:name="transactions"
+            app:argType="com.javierkontos.legendarybank.domain.TransactionList" />
+    </fragment>
 </navigation>

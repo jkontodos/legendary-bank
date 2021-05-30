@@ -20,6 +20,6 @@ class GoliathRepository @Inject constructor(
     }
 
     suspend fun getTransactions(): List<Transaction>? = remoteDataSource.getTransactions()?.let {
-        it.toDomainTransactionList()
+        it.toDomainTransactionList(localDataSource.retrieveCurrencyRates()!!.currencyRates, "EUR")
     }
 }

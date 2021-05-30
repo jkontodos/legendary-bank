@@ -3,7 +3,7 @@ package com.javierkontos.legendarybank.domain
 data class CurrencyRate(
     val from: String,
     val to: String,
-    val rate: String
+    val rate: Double
 )
 
 data class CurrencyRatesPreference(
