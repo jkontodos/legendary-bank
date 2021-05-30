@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Transaction(
     val sku: String,
-    val amount: String,
+    val amount: Double,
     val currency: String
 ): Parcelable
 
