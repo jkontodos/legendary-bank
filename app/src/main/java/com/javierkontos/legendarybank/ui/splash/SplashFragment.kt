@@ -59,6 +59,7 @@ class SplashFragment : Fragment() {
             )
         snackbar.show()
     }
+
     private fun navigateToTransactions() {
         Timber.d("Navigate to Transactions")
         val action = SplashFragmentDirections.actionSplashFragmentToTransactionsFragment()
