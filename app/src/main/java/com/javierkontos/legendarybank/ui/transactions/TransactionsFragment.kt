@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.javierkontos.legendarybank.R
 import com.javierkontos.legendarybank.databinding.FragmentTransactionsBinding
 import com.javierkontos.legendarybank.domain.Transaction
+import com.javierkontos.legendarybank.domain.TransactionList
 import com.javierkontos.legendarybank.ui.commons.visibleOrGone
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -22,6 +22,7 @@ import timber.log.Timber
 class TransactionsFragment : Fragment() {
     private lateinit var binding: FragmentTransactionsBinding
     private val viewModel: TransactionsViewModel by viewModels()
+    private lateinit var transactionList: TransactionList
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +51,7 @@ class TransactionsFragment : Fragment() {
         binding.loading.visibleOrGone(true)
     }
 
-    private fun showFailureError(){
+    private fun showFailureError() {
         val snackbar = Snackbar
             .make(
                 binding.root,
@@ -60,13 +61,15 @@ class TransactionsFragment : Fragment() {
         snackbar.show()
     }
 
-    private fun showTransactionsContent(transactionList: List<Transaction>) {
+    private fun showTransactionsContent(transactions: List<Transaction>) {
         binding.loading.visibleOrGone(false)
+        this.transactionList = TransactionList(transactions)
 
-        with(binding.rvTransactions){
+        with(binding.rvTransactions) {
             layoutManager = LinearLayoutManager(activity)
             adapter =
-                TransactionsAdapter(transactionList.sortedByDescending { it.sku }.distinctBy { it.sku }, object : TransactionOnClickListener {
+                TransactionsAdapter(transactions.sortedByDescending { it.sku }
+                    .distinctBy { it.sku }, object : TransactionOnClickListener {
                     override fun onClickProduct(productSku: String) {
                         navigateToTransactionDetail(productSku)
                     }
@@ -77,5 +80,10 @@ class TransactionsFragment : Fragment() {
 
     private fun navigateToTransactionDetail(productSku: String) {
         Timber.d("Click on Product: $productSku")
+        val action =
+            TransactionsFragmentDirections.actionTransactionsFragmentToTransactionDetailsFragment(
+                productSku, this.transactionList
+            )
+        findNavController().navigate(action)
     }
 }
